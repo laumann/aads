@@ -63,7 +63,7 @@ As small example graph can be found in fig.\ref{fig:exg}.
   \label{fig:exg}
 \end{figure}
 
-The linear program corresponding to the graph in fig.\ref{fig:exg} is
+The linear program corresponding to the graph in fig.~\ref{fig:exg} is
 the following:
 \[
 \begin{array}{lrcll}
@@ -86,6 +86,41 @@ capacity zero have been omitted. Without showing the work of the
 simplex algorithm, we arrive at the solution: $f_{s,v_1} = 5, f_{s,v_2} =
 10$.
 
+In order to find the cheapest critical connection we have to identify
+the \emph{minimal cuts}. Intuitively, if we have a cut $(S, T)$ of our
+graph and a maximum flow $f$ in that same graph, then the flow from
+$S$ to $T$ must be equal to capacity across that cut, $c(S,T)$. This
+means in order to increase the overall flow of the graph, we have to
+increase the capacities on some of the edges of our minimal cuts.
+
+If we only have one such minimal cut, then we simply select the edge
+with the smallest capacity and increase its capacity. If we have more
+than one cut, it's not immediately clear which edges to choose.
+
+In our example above, we can identify three minimal cuts:
+\begin{enumerate}
+  \item $S_1 = \{s\}$, $T_1 = V - \{s\}$
+  \item $S_2 = \{s,v_2\}$, $T_2 = \{v_1,v_3,t \}$
+  \item $S_3 = V - \{t\}$, $T_3 = \{t\}$.
+\end{enumerate}
+
+In the first cut we can identify the edge $(s, v_1)$, $c(s,v_1) = 5$,
+as the cheapest to increase, for $(S_2,T_2)$ the cheapest edge is
+$(v_2,t)$, $c(v_2,t) = 3$, and this is also the cheapest to increase
+for $(S_3, T_3)$. If we increase the capacities of these two edges by
+1, then we have increased the capacities of all the minimal cuts
+$(S_i,T_i)$ by 1. In this example the above cuts are still minimal
+cuts, so the max-flow min-cut theorem tells us that we have increased
+the maximum flow by 1 (otherwise we should have provoked another
+minimal cut).
+
+Recaptured briefly, in order to find the ``cheapest critical
+connection'', we need to inspect the minimal cuts and for each of
+them, select the edge with the smallest capacity to increase. In the
+end, by the max-flow min-cut property, we will have increased the
+maximum flow in the entire graph.
+
+
 The dual of the above stated problem can be stated by restating the
 above program in standard form $Ax\leq b$ along with a coefficent
 vector $c = \begin{pmatrix} 1 & 1 & 0 & 0 & 0 & 0\end{pmatrix}^T$. The
@@ -97,14 +132,14 @@ vector $c = \begin{pmatrix} 1 & 1 & 0 & 0 & 0 & 0\end{pmatrix}^T$. The
 \[
 \begin{array}{cl}
 \textrm{min.:} & 5y_1 + 10y_2 + 7y_3 + 7y_4 + 3y_5 + 12y_6\\
-\textrm{s.t.:} & \\
-& \begin{bmatrix}%
-  1 & -1 & 0 &  0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0\\
-  0 &  0 & 1 & -1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0\\
- -1 & 1 & 1 & -1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0\\
- -1 & 1 & 0 & 0 & 1 & -1 & 0 & 0 & 0 & 1 & 0 & 0\\
- 0 & 0 & -1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0\\
- 0 & 0 & 0 & 0 & -1 & 1 & 0 & 0 & 0 & 0 & 0 & 1\\
+\textrm{s.t.:} &
+ \begin{bmatrix}%
+ 1 & 0 & 0 & 0 & 0 & 0 & 1 & -1 & 0 & 0 & 0 & 0\\
+ 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & -1 & 0 & 0\\
+ 0 & 0 & 1 & 0 & 0 & 0 & -1 & 1 & 0 & 0 & 1 & -1\\
+ 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & -1 & 1 & 1 & -1\\
+ 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & -1 & 1 & 0 & 0\\
+ 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & -1 & 1
 \end{bmatrix}y
 \geq
 \begin{pmatrix}
@@ -113,14 +148,10 @@ vector $c = \begin{pmatrix} 1 & 1 & 0 & 0 & 0 & 0\end{pmatrix}^T$. The
 %%\begin{pmatrix} 1\\ 2\end{pmatrix}
 \end{array}
 \]
+A solution to the dual problem is $y_1 = 1, y_2 = 1$ and the rest are
+zero.
 
 In order to find cheapest critical connection, 
-
-\begin{align*}
-  1.&\quad S = \{s\}, T = V - \{s\}\\
-  2.&\quad S = \{s,v_2\}, T = V - S\\
-  3.&\quad S = V - \{t\}, T = \{t\}
-\end{align*}
 
 
 \vfill
