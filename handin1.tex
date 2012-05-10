@@ -1,0 +1,172 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{array}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\author{Philip Pickering\\\url{email@here.com} \and Thomas Bracht Laumann Jespersen\\\url{ntl316@alumni.ku.dk}}
+\title{Advanced Algorithms and Data Structures\\Hand-in 1}
+\date{}
+
+
+\setcounter{MaxMatrixCols}{20}
+\begin{document}
+\maketitle
+
+The problem could be formulated and solved as a max-flow
+problem. There are a few things to observe before that: the network
+(as in the example) is undirected, in which case we would want to make
+it directed. We also have several sources that may themselves be
+connected (such as nodes 2 and 3 in the example).
+
+%%  Let the network be an undirected graph called $N = (V,E)$. We want to
+%% construct a max-flow graph $G = (V_G, E_G)$ from $N$. For all the
+%% edges $u,v \in V$, we let $u,v \in V_G$, and $(u,v), (v,u) \in
+%% E_G$. If we let $k$ denote the capacity of the edge $(u,v)\in E$, then
+%% we let $c(u,v) = c(v,u) = k$ in $G$. Finally we attach a common source
+%% to all the nodes that were sources in $N$, call it $s$, and we let
+%% $c(s,u) = \infty$ for all the nodes $u$ that were sources in $N$.
+
+Let the network be an undirected graph called $N = (V,E)$. We want to
+construct a max-flow graph $G = (V',E')$ from $N$. For all nodes
+$u,v\in V$ and $(u,v)\in E$, we add to our max-flow 
+graph nodes $u, v$ and an extra node $w$. We add add directed edges
+$(u,v), (v,w)$ and $(w,u)$. If we let $k$ denote the capacity of the
+edge $(u,v)\in E$, then we let $c(u,v) = c(v,w) = c(w,u) = k$ in
+$G$. Lastly, we add a super source $s$ and an edge $(s,v)$ to all the
+nodes $v$ that were a source in $N$.
+
+The number of edges in $G$ is $|V'| = |V| + |E| + 1 $ and $|E'| = 3|E|
++ p$, where $p$ is the number of edges added from the super source
+$s$. $p$ is exactly the number of sources in $N$.
+
+Now we have the original problem stated as a max-flow problem, which
+can be easily expressed as a linear program
+
+\[
+\begin{array}{lrcll}
+\textrm{max.:} & \displaystyle\sum_{v\in V_G} f(s,v) -\displaystyle\sum_{v\in V_G} f(v,s) &     & & \\
+\textrm{s.t.:} &  f(u,v)                &\leq & c(u,v),  &\forall u,v\in V_G\\
+              &  \displaystyle\sum_{v\in V_G}f(v,u) -\displaystyle\sum_{v\in V_G}f(u,v)                & =   & 0 &\forall u,v\in V_G\\
+              & f(u,v) & = & 0, &\forall u,v\in V_G
+\end{array}
+\]
+
+As small example graph can be found in fig.\ref{fig:exg}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.7\textwidth]{exg.pdf}
+  \caption{An example max-flow graph}
+  \label{fig:exg}
+\end{figure}
+
+The linear program corresponding to the graph in fig.\ref{fig:exg} is
+the following:
+\[
+\begin{array}{lrcll}
+\textrm{max.:} & f_{s,v_1} + f_{s,v_2} & & &\\
+\textrm{s.t.:} & f_{s,v_1} &\leq & c(s,v_1) = 5&\\
+               & f_{s,v_2} &\leq & c(s,v_2) = 10&\\
+               & f_{v_1,v_3} &\leq & c(v_1,v_3) = 7&\\
+               & f_{v_2,v_3} &\leq & c(v_1,v_3) = 7&\\
+               & f_{v_2,t} &\leq & c(v_2,t) = 3&\\
+               & f_{v_3,t} &\leq & c(v_3,t) = 12&\\
+               & f_{s,v_1} &= &f_{v_1,v_3}&\\
+               & f_{s,v_2} &= &f_{v_2,v_3} + f_{v_2,t}&\\
+               & f_{v_1,v_3} + f_{v_2,v_3} &= &f_{v_3,t}&\\
+& f_{s,v_1}, f_{s,v_2},f_{v_1,v_3},f_{v_2,v_3},f_{v_2,t}, f_{v_3,t} & \geq & 0\\
+\end{array}
+\]
+
+We have minimized the above linear program, such that edges with
+capacity zero have been omitted. Without showing the work of the
+simplex algorithm, we arrive at the solution: $f_{s,v_1} = 5, f_{s,v_2} =
+10$.
+
+The dual of the above stated problem can be stated by restating the
+above program in standard form $Ax\leq b$ along with a coefficent
+vector $c = \begin{pmatrix} 1 & 1 & 0 & 0 & 0 & 0\end{pmatrix}^T$. The
+  dual is then given by $A^Ty \geq c$, where we minimize $b^Ty$. $y$
+  is a vector of size proportional to the number of constraints, in
+  our case 12, because each of the equality constraints give rise to
+  two inequalities. Now we can state the dual:
+
+\[
+\begin{array}{cl}
+\textrm{min.:} & 5y_1 + 10y_2 + 7y_3 + 7y_4 + 3y_5 + 12y_6\\
+\textrm{s.t.:} & \\
+& \begin{bmatrix}%
+  1 & -1 & 0 &  0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0\\
+  0 &  0 & 1 & -1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0\\
+ -1 & 1 & 1 & -1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0\\
+ -1 & 1 & 0 & 0 & 1 & -1 & 0 & 0 & 0 & 1 & 0 & 0\\
+ 0 & 0 & -1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0\\
+ 0 & 0 & 0 & 0 & -1 & 1 & 0 & 0 & 0 & 0 & 0 & 1\\
+\end{bmatrix}y
+\geq
+\begin{pmatrix}
+  1\\ 1\\ 0\\ 0\\ 0\\ 0
+\end{pmatrix}
+%%\begin{pmatrix} 1\\ 2\end{pmatrix}
+\end{array}
+\]
+
+In order to find cheapest critical connection, 
+
+\begin{align*}
+  1.&\quad S = \{s\}, T = V - \{s\}\\
+  2.&\quad S = \{s,v_2\}, T = V - S\\
+  3.&\quad S = V - \{t\}, T = \{t\}
+\end{align*}
+
+
+\vfill
+ 
+%% A company maintains a computer network where multiple workstations
+%% often have to send large amounts of data to a single server through a
+%% sequence of relay stations (see Figure 1 for an example). Each
+%% connection between computers/relays has a fixed upper bound on the
+%% transfer rate of data.  
+
+\begin{enumerate}
+\item Give a precise explanation how the company could efficiently determine
+the largest transfer rate to the server. 
+
+\item Write a linear program that finds this transfer rate
+
+\item Give a small example graph and write the optimal solution to the
+linear program given above.  
+
+\item The cost of increasing the capacity of a connection with one unit is
+directly proportional to the capacity of that connection.  
+
+Give a precise explanation how the company could efficiently determine
+the cheapest 'critical connection' to improve in order to get a better
+maximum transfer rate from the workstations to the server.  
+
+\item Write the dual of the linear program you gave before and find the
+optimal solution in the example you created before.   
+
+\item How could the critical connections be determined from the dual?
+
+\item Some of the relay stations are not owned by the company, so they have
+to pay a leasing price of 1 øre for each byte transferred in and out
+of the company’s network (see Figure 2 for an example).  
+
+Assuming that the company has already determined the maximum transfer
+rate, and wants to maintain this, give a linear program that finds the
+lowest possible price they will have to pay for it.
+
+\item Attached is a Java class (Network.java) specifying a network as just
+described.
+
+Report both the largest bit rate and the lowest leasing-price for this
+problem and give a brief description of how you obtained this
+result. It is preferrable if you use a linear programming package that
+can be called from your programming language of choice. The second
+assignment will require this as well. 
+\end{enumerate}
+\end{document}

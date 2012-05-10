@@ -1,0 +1,17 @@
+
+digraph g {
+	rankdir=LR;
+	node [shape="circle"];
+	s;
+	t;
+	subgraph cluster1 {
+		color=white;
+		v1 -> v3 [label="7"];
+		//[constraint=false];
+		v2 -> v3 [label="7",constraint=false];
+		v2 -> t [label="3"];
+		v3 -> t [label="12"];
+	}
+	s -> v1 [label="5"];
+	s -> v2 [label="10"];
+}
