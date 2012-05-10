@@ -6,7 +6,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 
-\author{Philip Pickering\\\url{email@here.com} \and Thomas Bracht Laumann Jespersen\\\url{ntl316@alumni.ku.dk}}
+\author{Philip Pickering\\\url{pgpick@gmx.at} \and Thomas Bracht Laumann Jespersen\\\url{ntl316@alumni.ku.dk}}
 \title{Advanced Algorithms and Data Structures\\Hand-in 1}
 \date{}
 
@@ -151,17 +151,26 @@ vector $c = \begin{pmatrix} 1 & 1 & 0 & 0 & 0 & 0\end{pmatrix}^T$. The
 A solution to the dual problem is $y_1 = 1, y_2 = 1$ and the rest are
 zero.
 
-In order to find cheapest critical connection, 
+\section*{Paying for relay stations}
+\begin{quotation}\itshape
+Some of the relay stations are not owned by the company, so they have
+to pay a leasing price of 1 øre for each byte transferred in and out
+of the company’s network (see Figure 2 for an example).  
 
+Assuming that the company has already determined the maximum transfer
+rate, and wants to maintain this, give a linear program that finds the
+lowest possible price they will have to pay for it.
+\end{quotation}
+The solution to this is to formulate the problem as a
+\emph{minimum-cost flow} problem (29.51), where the cost function
+\[
+a(u,v) = \left\{\begin{array}{ll}1,&\text{if $u$ or $v$ is not owned
+  by the company}\\ 0,&\text{otherwise.}\end{array}\right.
+\]
+Then we can directly apply the definition from the book, because we
+can require the value of the flow to be exactly $d$.
 
-\vfill
- 
-%% A company maintains a computer network where multiple workstations
-%% often have to send large amounts of data to a single server through a
-%% sequence of relay stations (see Figure 1 for an example). Each
-%% connection between computers/relays has a fixed upper bound on the
-%% transfer rate of data.  
-
+\newpage
 \begin{enumerate}
 \item Give a precise explanation how the company could efficiently determine
 the largest transfer rate to the server. 
