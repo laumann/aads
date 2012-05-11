@@ -55,7 +55,19 @@ public class Network extends MF {
     connect(23	,	24	,	50	, cs);
     connect(25	,	26	,	50	, cs);
 
+    int[][] cost = new int[27][27];
+    connect(18, 20, 1, cost);
+    connect(18, 21, 1, cost);
+    connect(17, 23, 1, cost);
+    connect(12, 23, 1, cost);
+    connect(15, 24, 1, cost);
+    connect(16, 24, 1, cost);
+    connect(16, 25, 1, cost);
+    
 
+    cost = mkCost(cost, cs);
+    cost = addSuperSource(mkCost(cost, cs), new int[0]);
+	
     print(cs);
 
     int[] sources = new int[6];
@@ -66,16 +78,36 @@ public class Network extends MF {
     sources[4] = 4;
     sources[5] = 5;
     cs = addSuperSource(conv2MaxFlow(cs), sources);	
-	
-	print(cs);
 
+
+	int [][] map = createmap(cs);
+	String[] imap = createimap(cs);
+	print(cs);
+	print(cost);
 	try {
-	    LpSolve solver = MF.conv2LP(cs, 0, 27);
+	    int s = 0;
+	    int t = 20;
+	    int E = cntE(cs);
+	    LpSolve solver = MF.conv2LP(cs, s, t, map);
+	    solver.solve();
+	    double objective = solver.getObjective();
+
 	    System.out.println("Value of objective function: " + solver.getObjective());
 	    double[] var = solver.getPtrVariables();
 	    for (int i = 0; i < var.length; i++) {
 		System.out.println("Value of var[" + i + "] = " + var[i]);
 	    }
+
+
+	    System.out.println("min cost:");	    
+	    LpSolve mincost = conv2MinCostLP(cs, cost, map, s, t, objective);
+	    mincost.solve();
+	    System.out.println("Value of objective function: " + mincost.getObjective());
+	    var = mincost.getPtrVariables();
+	    for (int i = 0; i < var.length; i++) {
+		System.out.println("Value of var[" + imap[i] + "] = " + var[i]);
+	    }
+
 
 	} catch (Exception e) {
 	    e.printStackTrace();
