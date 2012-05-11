@@ -86,6 +86,8 @@ capacity zero have been omitted. Without showing the work of the
 simplex algorithm, we arrive at the solution: $f_{s,v_1} = 5, f_{s,v_2} =
 10$.
 
+\section*{\hfill}
+
 In order to find the cheapest critical connection we have to identify
 the \emph{minimal cuts}. Intuitively, if we have a cut $(S, T)$ of our
 graph and a maximum flow $f$ in that same graph, then the flow from
@@ -96,7 +98,6 @@ increase the capacities on some of the edges of our minimal cuts.
 If we only have one such minimal cut, then we simply select the edge
 with the smallest capacity and increase its capacity. If we have more
 than one cut, it's not immediately clear which edges to choose.
-
 In our example above, we can identify three minimal cuts:
 \begin{enumerate}
   \item $S_1 = \{s\}$, $T_1 = V - \{s\}$
@@ -120,6 +121,7 @@ them, select the edge with the smallest capacity to increase. In the
 end, by the max-flow min-cut property, we will have increased the
 maximum flow in the entire graph.
 
+\section*{\hfill}
 
 The dual of the above stated problem can be stated by restating the
 above program in standard form $Ax\leq b$ along with a coefficent
@@ -151,18 +153,20 @@ vector $c = \begin{pmatrix} 1 & 1 & 0 & 0 & 0 & 0\end{pmatrix}^T$. The
 A solution to the dual problem is $y_1 = 1, y_2 = 1$ and the rest are
 zero.
 
-\section*{Paying for relay stations}
-\begin{quotation}\itshape
-Some of the relay stations are not owned by the company, so they have
-to pay a leasing price of 1 øre for each byte transferred in and out
-of the company’s network (see Figure 2 for an example).  
+\section*{\hfill}
+%% \begin{quotation}\itshape
+%% Some of the relay stations are not owned by the company, so they have
+%% to pay a leasing price of 1 øre for each byte transferred in and out
+%% of the company’s network (see Figure 2 for an example).  
 
-Assuming that the company has already determined the maximum transfer
-rate, and wants to maintain this, give a linear program that finds the
-lowest possible price they will have to pay for it.
-\end{quotation}
-The solution to this is to formulate the problem as a
-\emph{minimum-cost flow} problem (29.51), where the cost function
+%% Assuming that the company has already determined the maximum transfer
+%% rate, and wants to maintain this, give a linear program that finds the
+%% lowest possible price they will have to pay for it.
+%% \end{quotation}
+
+In order to model that some of the relay stations aren't owned by
+the company, we can rephrase the problem as a \emph{minimum-cost flow}
+problem (29.51), where the cost function:
 \[
 a(u,v) = \left\{\begin{array}{ll}1,&\text{if $u$ or $v$ is not owned
   by the company}\\ 0,&\text{otherwise.}\end{array}\right.
@@ -170,43 +174,43 @@ a(u,v) = \left\{\begin{array}{ll}1,&\text{if $u$ or $v$ is not owned
 Then we can directly apply the definition from the book, because we
 can require the value of the flow to be exactly $d$.
 
-\newpage
-\begin{enumerate}
-\item Give a precise explanation how the company could efficiently determine
-the largest transfer rate to the server. 
+%% \newpage
+%% \begin{enumerate}
+%% \item Give a precise explanation how the company could efficiently determine
+%% the largest transfer rate to the server. 
 
-\item Write a linear program that finds this transfer rate
+%% \item Write a linear program that finds this transfer rate
 
-\item Give a small example graph and write the optimal solution to the
-linear program given above.  
+%% \item Give a small example graph and write the optimal solution to the
+%% linear program given above.  
 
-\item The cost of increasing the capacity of a connection with one unit is
-directly proportional to the capacity of that connection.  
+%% \item The cost of increasing the capacity of a connection with one unit is
+%% directly proportional to the capacity of that connection.  
 
-Give a precise explanation how the company could efficiently determine
-the cheapest 'critical connection' to improve in order to get a better
-maximum transfer rate from the workstations to the server.  
+%% Give a precise explanation how the company could efficiently determine
+%% the cheapest 'critical connection' to improve in order to get a better
+%% maximum transfer rate from the workstations to the server.  
 
-\item Write the dual of the linear program you gave before and find the
-optimal solution in the example you created before.   
+%% \item Write the dual of the linear program you gave before and find the
+%% optimal solution in the example you created before.   
 
-\item How could the critical connections be determined from the dual?
+%% \item How could the critical connections be determined from the dual?
 
-\item Some of the relay stations are not owned by the company, so they have
-to pay a leasing price of 1 øre for each byte transferred in and out
-of the company’s network (see Figure 2 for an example).  
+%% \item Some of the relay stations are not owned by the company, so they have
+%% to pay a leasing price of 1 øre for each byte transferred in and out
+%% of the company’s network (see Figure 2 for an example).  
 
-Assuming that the company has already determined the maximum transfer
-rate, and wants to maintain this, give a linear program that finds the
-lowest possible price they will have to pay for it.
+%% Assuming that the company has already determined the maximum transfer
+%% rate, and wants to maintain this, give a linear program that finds the
+%% lowest possible price they will have to pay for it.
 
-\item Attached is a Java class (Network.java) specifying a network as just
-described.
+%% \item Attached is a Java class (Network.java) specifying a network as just
+%% described.
 
-Report both the largest bit rate and the lowest leasing-price for this
-problem and give a brief description of how you obtained this
-result. It is preferrable if you use a linear programming package that
-can be called from your programming language of choice. The second
-assignment will require this as well. 
-\end{enumerate}
+%% Report both the largest bit rate and the lowest leasing-price for this
+%% problem and give a brief description of how you obtained this
+%% result. It is preferrable if you use a linear programming package that
+%% can be called from your programming language of choice. The second
+%% assignment will require this as well. 
+%% \end{enumerate}
 \end{document}
