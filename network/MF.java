@@ -1,4 +1,7 @@
 import lpsolve.*;
+
+// uses LpSolve wrapper for java
+
 import java.util.Arrays;
 
 public class MF {
