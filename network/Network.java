@@ -1,4 +1,7 @@
-public class Network {
+import lpsolve.*;
+
+public class Network extends MF {
+
 
   public static void main(String[] args) {
     int[][] cs = new int[27][27];
@@ -52,17 +55,34 @@ public class Network {
     connect(23	,	24	,	50	, cs);
     connect(25	,	26	,	50	, cs);
 
-    for(int i=0;i<cs.length;i++){
-      for(int j=0;j<cs[0].length;j++){
-	System.out.printf("%4d",cs[i][j]);
-      }
-      System.out.println();
-    }
-    System.out.println(cnt);
+
+    print(cs);
+
+    int[] sources = new int[6];
+    sources[0] = 0;
+    sources[1] = 1;
+    sources[2] = 2;
+    sources[3] = 3;
+    sources[4] = 4;
+    sources[5] = 5;
+    cs = addSuperSource(conv2MaxFlow(cs), sources);	
+	
+	print(cs);
+
+	try {
+	    LpSolve solver = MF.conv2LP(cs, 0, 27);
+	    System.out.println("Value of objective function: " + solver.getObjective());
+	    double[] var = solver.getPtrVariables();
+	    for (int i = 0; i < var.length; i++) {
+		System.out.println("Value of var[" + i + "] = " + var[i]);
+	    }
+
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+
+
   }
-    static int cnt = 0;
-  static void connect(int i, int j, int capacity, int[][] cs){
-    cs[i][j] = cs[j][i] = capacity;
-    cnt++;
-  }
+
+
 }
