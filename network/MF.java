@@ -31,7 +31,7 @@ public class MF {
 		    cap = cost[from][to];
 		    nw[from][to] = cap;
 		    nw[to][insert] = cap;
-		    nw[insert][from] = cap;
+		    //nw[insert][from] = cap;
 		    insert++;
 		}
 	    }
@@ -97,6 +97,24 @@ public class MF {
 	return map;
 
     }
+
+    public static String[] createimap(int [][] cs) {
+
+	int cnt = 0;
+	String[] map = new String[cntE(cs)];
+	for (int i = 0; i < cs.length; i++) {
+	    for (int j = 0; j < cs.length; j++) 
+		
+		if (cs[i][j] != 0) {
+		    map[cnt] = "(" + i + ")(" + j + ")";
+		    cnt ++;
+		} 
+	}
+
+	return map;
+
+    }
+
 
     public static LpSolve conv2LPBase(int[][] cs, int s, int t, int [][] map, int V, int E) throws LpSolveException{
 	LpSolve solver = LpSolve.makeLp(0, E);
@@ -206,6 +224,12 @@ public class MF {
     cs[i][j] = cs[j][i] = capacity;
 
   }
+
+ public static void uconnect(int i, int j, int capacity, int[][] cs){
+    cs[i][j] = capacity;
+
+  }
+
 
   public   static void print(int [][] cs) {
 	System.out.println();
