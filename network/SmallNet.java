@@ -3,12 +3,12 @@ import lpsolve.*;
 class SmallNet extends MF {
     public static void main(String[] args) {
 	int [][] cs = new int[5][5];
-	connect(0, 1, 5, cs);
-	connect(0, 2, 10, cs);
-	connect(1, 3, 7, cs);
-	connect(2, 3, 7, cs);
-	connect(2, 4, 3, cs);
-	connect(3, 4, 12, cs);
+	uconnect(0, 1, 5, cs);
+	uconnect(0, 2, 11, cs);
+	uconnect(1, 3, 7, cs);
+	uconnect(2, 3, 8, cs);
+	uconnect(2, 4, 3, cs);
+	uconnect(3, 4, 12, cs);
 	
 	print(cs);
 	int[] sources = new int[1];
@@ -18,10 +18,10 @@ class SmallNet extends MF {
 	int t = 4;
 	
 	int[][] cost = new int[5][5];
-	connect(2, 3, 1, cost);
-	cost = mkCost(cost, cs);
+	uconnect(2, 3, 1, cost);
+	//cost = mkCost(cost, cs);
 
-	cs = conv2MaxFlow(cs);
+	//cs = conv2MaxFlow(cs);
 	print(cs);
 	print(cost);
 	int [][] map = createmap(cs);
@@ -34,16 +34,19 @@ class SmallNet extends MF {
 	    for (int i = 0; i < var.length; i++) {
 		System.out.println("Value of var[" + i + "] = " + var[i]);
 	    }
-
+	    solver.printDuals();
+	    /*
 	    System.out.println("min cost:");	    
 	    LpSolve mincost = conv2MinCostLP(cs, cost, map, s, t, objective);
 	    mincost.solve();
-	    System.out.println("Value of objective function: " + solver.getObjective());
-	    var = solver.getPtrVariables();
+	    System.out.println("Value of objective function: " + mincost.getObjective());
+	    var = mincost.getPtrVariables();
 	    for (int i = 0; i < var.length; i++) {
 		System.out.println("Value of var[" + i + "] = " + var[i]);
 	    }
 
+	    mincost.printLp();
+	    */
 
 	} catch (Exception e) {
 	    e.printStackTrace();
