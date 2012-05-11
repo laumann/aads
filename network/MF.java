@@ -1,5 +1,5 @@
 import lpsolve.*;
-
+import java.util.Arrays;
 
 public class MF {
     
@@ -98,20 +98,63 @@ public class MF {
 
     }
 
-    public static String[] createimap(int [][] cs) {
+    public static String[] createimap(int [][] cs, int[] sources, int sink) {
 
-	int cnt = 0;
-	String[] map = new String[cntE(cs)];
-	for (int i = 0; i < cs.length; i++) {
-	    for (int j = 0; j < cs.length; j++) 
+
+	// int cnt = 0;
+	// 
+	// for (int i = 0; i < cs.length; i++) {
+	//     for (int j = 0; j < cs.length; j++) 
 		
-		if (cs[i][j] != 0) {
-		    map[cnt] = "(" + i + ")(" + j + ")";
+	// 	if (cs[i][j] != 0) {
+	// 	    map[cnt] = "(" + i + ")(" + j + ")";
+	// 	    cnt ++;
+	// 	} 
+	// }
+		
+	// return map;
+
+	int V = cntV(cs);
+	int E = cntE(cs)/2;
+	String[] map = new String[3*E + sources.length];
+	String[][] nw = new String[V+E+1][V+E+1];
+
+	int cap;
+
+	int insert = cs.length;
+	for (int i : sources) {
+	    nw[0][i+1] = "([S])(" + i + "[s])";
+	}
+	Arrays.sort(sources);
+
+	for (int from = 0; from < cs.length; from++)
+	    for (int to = from+1; to < cs.length; to++) {
+		if (cs[from][to] != 0) {
+		    String f = String.valueOf(from);
+		    String t = String.valueOf(to);
+		    if(Arrays.binarySearch(sources, from) >= 0) f = f + "[s]";
+		    if(to == sink) t = t + "[t]";
+		    nw[from+1][to+1] = "(" + f + ")(" + t + ")";
+		    nw[to+1][insert+1] = "(" + t + ")(" + t + "/" + f + ")";
+		    nw[insert+1][from+1] = "(" + t + "/" + f + ")(" + f + ")";
+		    insert++;
+		}
+	    }
+	
+	int cnt = 0;
+	
+	for (int i = 0; i < nw.length; i++) {
+	    for (int j = 0; j < nw.length; j++) 
+		
+		if (nw[i][j] != null) {
+		    map[cnt] = nw[i][j];
 		    cnt ++;
 		} 
 	}
-
+		
 	return map;
+
+
 
     }
 
@@ -191,7 +234,7 @@ public class MF {
 	    }
 	}
 	
-	System.out.println(constrStr(constr));
+	
 	solver.strSetObjFn(constrStr(constr));
 	return solver;
     }
