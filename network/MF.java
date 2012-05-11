@@ -17,6 +17,29 @@ public class MF {
 	return cs.length;
     }
 
+    public static int[][] mkCost(int [][] cost, int [][]cs)
+    {
+	int V = cntV(cs);
+	int E = cntE(cs)/2;
+	int[][] nw = new int[V+E][V+E];
+	int cap;
+	int insert = cs.length;
+	
+	for (int from = 0; from < cs.length; from++)
+	    for (int to = from+1; to < cs.length; to++) {
+		if (cs[from][to] != 0) {
+		    cap = cost[from][to];
+		    nw[from][to] = cap;
+		    nw[to][insert] = cap;
+		    nw[insert][from] = cap;
+		    insert++;
+		}
+	    }
+	
+	return nw;
+    }
+
+
     public static int[][] conv2MaxFlow(int [][]cs)
     {
 	int V = cntV(cs);
@@ -75,11 +98,9 @@ public class MF {
 
     }
 
-    public static LpSolve conv2LP(int[][] cs, int s, int t) throws LpSolveException{
-	int E = cntE(cs);
-	int V = cntV(cs);
+    public static LpSolve conv2LPBase(int[][] cs, int s, int t, int [][] map, int V, int E) throws LpSolveException{
 	LpSolve solver = LpSolve.makeLp(0, E);
-	int [][] map = createmap(cs);
+
 
 	// GENERATE capacity constraints
 	for (int from = 0; from < cs.length; from++) {
@@ -107,9 +128,58 @@ public class MF {
 		solver.strAddConstraint(constrStr(constr), LpSolve.EQ, 0);
 	    }
 	}
-		
+	return solver;
+    }		
 
+
+    public static LpSolve conv2LP(int[][] cs, int s, int t, int [][] map) throws LpSolveException{
+	int E = cntE(cs);
+	int V = cntV(cs);
+
+	LpSolve solver = conv2LPBase(cs, s, t, map, V, E);
 	// GENERATE objective function
+
+	solver.strSetObjFn(objStr(cs, E, map, s));
+
+	// other options
+	solver.setMaxim();
+	solver.setLpName("Converted max flow");
+	//	solver.setVerbose(3);
+
+
+
+	return solver;
+    }
+
+
+    public static LpSolve conv2MinCostLP(int[][] cs, int[][] cost, int[][] map, int s, int t, double objective) throws LpSolveException {
+	int E = cntE(cs);
+	int V = cntV(cs);
+
+	LpSolve solver = conv2LPBase(cs, s, t, map, V, E);
+
+	solver.strAddConstraint(objStr(cs, E, map, s), LpSolve.EQ, objective);
+	
+
+	solver.setMinim();
+	solver.setLpName("Converted min cost flow");
+
+	int [] constr = new int[E];
+ 	for (int from = 0; from < cs.length; from++) {
+	    for (int  to = 0; to < cs.length; to++) {
+		if (cs[from][to] != 0) {
+		    constr[map[from][to]] = cost[from][to];
+		}
+	    }
+	}
+	
+	System.out.println(constrStr(constr));
+	solver.strSetObjFn(constrStr(constr));
+	return solver;
+    }
+
+    public static String objStr(int [][] cs, int E, int [][] map, int s) {
+
 	int [] obj = new int[E];
 	for (int i = 0; i < cs.length; i++) {
 	    if (cs[s][i] != 0) {
@@ -119,19 +189,8 @@ public class MF {
 		obj[map[i][s]] = -1;
 	    }
 	}
-
-	solver.strSetObjFn(constrStr(obj));
-
-	// other options
-	solver.setMaxim();
-	solver.setLpName("Converted max flow");
-	solver.setVerbose(3);
-
-	solver.solve();
-
-	return solver;
+	return constrStr(obj);
     }
-
 
     public static String constrStr(int[] c) {
 	StringBuilder str = new StringBuilder(c.length*3);
