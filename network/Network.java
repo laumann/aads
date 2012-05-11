@@ -68,7 +68,7 @@ public class Network extends MF {
     cost = mkCost(cost, cs);
     cost = addSuperSource(mkCost(cost, cs), new int[0]);
 	
-    print(cs);
+    //print(cs);
 
     int[] sources = new int[6];
     sources[0] = 0;
@@ -77,13 +77,14 @@ public class Network extends MF {
     sources[3] = 3;
     sources[4] = 4;
     sources[5] = 5;
+    String[] imap = createimap(cs, sources, 19);
     cs = addSuperSource(conv2MaxFlow(cs), sources);	
 
 
 	int [][] map = createmap(cs);
-	String[] imap = createimap(cs);
-	print(cs);
-	print(cost);
+	
+	//print(cs);
+	//print(cost);
 	try {
 	    int s = 0;
 	    int t = 20;
@@ -95,7 +96,7 @@ public class Network extends MF {
 	    System.out.println("Value of objective function: " + solver.getObjective());
 	    double[] var = solver.getPtrVariables();
 	    for (int i = 0; i < var.length; i++) {
-		System.out.println("Value of var[" + i + "] = " + var[i]);
+		System.out.println("Flow[" + imap[i] + "] = " + var[i]);
 	    }
 
 
@@ -105,7 +106,7 @@ public class Network extends MF {
 	    System.out.println("Value of objective function: " + mincost.getObjective());
 	    var = mincost.getPtrVariables();
 	    for (int i = 0; i < var.length; i++) {
-		System.out.println("Value of var[" + imap[i] + "] = " + var[i]);
+		System.out.println("Flow[" + imap[i] + "] = " + var[i]);
 	    }
 
 
