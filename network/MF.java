@@ -17,7 +17,7 @@ public class MF {
 	return cs.length;
     }
 
-    public static int[][] mkCost(int [][] cost, int [][]cs)
+    public static int[][] mkCost(int [][] cost, int [][]cs, int[] sources, int sink)
     {
 	int V = cntV(cs);
 	int E = cntE(cs)/2;
@@ -28,11 +28,13 @@ public class MF {
 	for (int from = 0; from < cs.length; from++)
 	    for (int to = from+1; to < cs.length; to++) {
 		if (cs[from][to] != 0) {
-		    cap = cost[from][to];
+		    cap = cost[from][to];		 
 		    nw[from][to] = cap;
-		    nw[to][insert] = cap;
-		    //nw[insert][from] = cap;
-		    insert++;
+		    if (/*!isIn(from, sources) &&*/ to != sink) {
+			nw[to][insert] = cap;
+			//nw[insert][from] = cap;
+			insert++;
+		    }
 		}
 	    }
 	
@@ -40,7 +42,7 @@ public class MF {
     }
 
 
-    public static int[][] conv2MaxFlow(int [][]cs)
+    public static int[][] conv2MaxFlow(int [][]cs, int[] sources, int sink)
     {
 	int V = cntV(cs);
 	int E = cntE(cs)/2;
@@ -53,9 +55,15 @@ public class MF {
 		if (cs[from][to] != 0) {
 		    cap = cs[from][to];
 		    nw[from][to] = cap;
-		    nw[to][insert] = cap;
-		    nw[insert][from] = cap;
-		    insert++;
+		    
+		    // ALSO connect ways BACK to the source servers (since there
+		    // exist links between servers. still valid max flow graph
+		    // after adding super source
+		    if (/*!isIn(from, sources) &&*/ to != sink) {
+			nw[to][insert] = cap;
+			nw[insert][from] = cap;
+			insert++;
+		    }
 		}
 	    }
 	
@@ -98,6 +106,11 @@ public class MF {
 
     }
 
+    public static boolean isIn(int i, int [] arr) {
+	Arrays.sort(arr);
+	return (Arrays.binarySearch(arr, i) >= 0);
+    }
+
     public static String[] createimap(int [][] cs, int[] sources, int sink) {
 
 
@@ -125,19 +138,21 @@ public class MF {
 	for (int i : sources) {
 	    nw[0][i+1] = "([S])(" + i + "[s])";
 	}
-	Arrays.sort(sources);
+
 
 	for (int from = 0; from < cs.length; from++)
 	    for (int to = from+1; to < cs.length; to++) {
 		if (cs[from][to] != 0) {
 		    String f = String.valueOf(from);
 		    String t = String.valueOf(to);
-		    if(Arrays.binarySearch(sources, from) >= 0) f = f + "[s]";
+		    if(isIn(from, sources)) f = f + "[s]";
 		    if(to == sink) t = t + "[t]";
 		    nw[from+1][to+1] = "(" + f + ")(" + t + ")";
-		    nw[to+1][insert+1] = "(" + t + ")(" + t + "/" + f + ")";
-		    nw[insert+1][from+1] = "(" + t + "/" + f + ")(" + f + ")";
-		    insert++;
+		    if (/*!isIn(from, sources) &&*/ to != sink) {
+			nw[to+1][insert+1] = "(" + t + ")(" + t + "/" + f + ")";
+			nw[insert+1][from+1] = "(" + t + "/" + f + ")(" + f + ")";
+			insert++;
+		    }
 		}
 	    }
 	
