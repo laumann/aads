@@ -5,6 +5,8 @@
 \usepackage{url}
 \usepackage{graphicx}
 \usepackage{amsmath}
+\usepackage{alltt}
+\usepackage{multicol}
 
 \author{Philip Pickering\\\url{pgpick@gmx.at} \and Thomas Bracht Laumann Jespersen\\\url{ntl316@alumni.ku.dk}}
 \title{Advanced Algorithms and Data Structures\\Hand-in 1}
@@ -162,51 +164,132 @@ rate, and wants to maintain this, give a linear program that finds the
 lowest possible price they will have to pay for it.
 \end{quotation}
 The solution to this is to formulate the problem as a
-\emph{minimum-cost flow} problem (29.51), where the cost function
+\emph{minimum-cost flow} problem (Cormen 29.51, pg 862), where the cost function is defined by
 \[
-a(u,v) = \left\{\begin{array}{ll}1,&\text{if $u$ or $v$ is not owned
+a(u,v) = \left\{\begin{array}{ll}1,&\text{if $u$ xor $v$ is not owned
   by the company}\\ 0,&\text{otherwise.}\end{array}\right.
 \]
 Then we can directly apply the definition from the book, because we
 can require the value of the flow to be exactly $d$.
 
-\newpage
+\section*{Results for the network}
+\subsection*{Obtaining results}
+Using the provided \emph{Network.java}, the following steps were taken to obtain the results:
 \begin{enumerate}
-\item Give a precise explanation how the company could efficiently determine
-the largest transfer rate to the server. 
-
-\item Write a linear program that finds this transfer rate
-
-\item Give a small example graph and write the optimal solution to the
-linear program given above.  
-
-\item The cost of increasing the capacity of a connection with one unit is
-directly proportional to the capacity of that connection.  
-
-Give a precise explanation how the company could efficiently determine
-the cheapest 'critical connection' to improve in order to get a better
-maximum transfer rate from the workstations to the server.  
-
-\item Write the dual of the linear program you gave before and find the
-optimal solution in the example you created before.   
-
-\item How could the critical connections be determined from the dual?
-
-\item Some of the relay stations are not owned by the company, so they have
-to pay a leasing price of 1 øre for each byte transferred in and out
-of the company’s network (see Figure 2 for an example).  
-
-Assuming that the company has already determined the maximum transfer
-rate, and wants to maintain this, give a linear program that finds the
-lowest possible price they will have to pay for it.
-
-\item Attached is a Java class (Network.java) specifying a network as just
-described.
-
-Report both the largest bit rate and the lowest leasing-price for this
-problem and give a brief description of how you obtained this
-result. It is preferrable if you use a linear programming package that
-can be called from your programming language of choice. The second
-assignment will require this as well. 
+\item The given network was converted to a maximum flow graph
+\item Then it was further transformed into a linear program: As described in Corman, pg 860, an objective function and constraints for the capacities and the flow conservation have been generated.
+\item The objective function was set to be maximized.
+\item This LP has been solved using \emph{lp\_solve} with the Java wrapper. 
 \end{enumerate}
+The returned result was the maximum flow and represented the largest bit rate. For solving the problem of the lowest leasing rate, the linear program has been modified to a minimum cost flow problem (see Cormen pg 861):
+\begin{enumerate}
+\item The previous objective function was used as the LHS of a new constraint, the previous result was used as the RHS.
+\item A cost matrix was created and transformed into a form to match the converted network.
+\item A new objective function using the cost matrix was generated.
+\item The new LP minimized the objective function.
+\end{enumerate}
+This returned the minimum costs for leasing while maintaining the transfer rate. 
+
+See attached Java files, especially \emph{MF.java} and the modified \emph{Network.java}, also see a simpler network which represents the example from above in \emph{SmallNet.java}. 
+
+The following is the relevant part of the output of the calculations on the given network.
+\subsection*{Largest bit rate}
+\begin{multicols}{2}
+\begin{alltt}
+Max Flow: 95.0
+Flow[([S])(0[s])] = 30.0
+Flow[([S])(1[s])] = 10.0
+Flow[([S])(2[s])] = 25.0
+Flow[([S])(3[s])] = 5.0
+Flow[([S])(4[s])] = 15.0
+Flow[([S])(5[s])] = 10.0
+Flow[(0[s])(6)] = 20.0
+Flow[(0[s])(7)] = 10.0
+Flow[(1[s])(8)] = 10.0
+Flow[(2[s])(9)] = 25.0
+Flow[(3[s])(9)] = 5.0
+Flow[(4[s])(9)] = 5.0
+Flow[(4[s])(10)] = 10.0
+Flow[(5[s])(10)] = 10.0
+Flow[(6)(18)] = 20.0
+Flow[(7)(18)] = 10.0
+Flow[(8)(12)] = 10.0
+Flow[(9)(11)] = 15.0
+Flow[(9)(12)] = 20.0
+Flow[(10)(11)] = 20.0
+Flow[(11)(13)] = 15.0
+Flow[(11)(14)] = 20.0
+Flow[(12)(15)] = 30.0
+Flow[(13)(14)] = 10.0
+Flow[(13)(15)] = 5.0
+Flow[(14)(19[t])] = 30.0
+Flow[(15)(16)] = 10.0
+Flow[(15)(19[t])] = 30.0
+Flow[(16)(19[t])] = 35.0
+Flow[(17)(23)] = 10.0
+Flow[(18)(20)] = 10.0
+Flow[(18)(21)] = 10.0
+Flow[(18)(18/17)] = 10.0
+Flow[(20)(22)] = 10.0
+Flow[(21)(22)] = 20.0
+Flow[(22)(24)] = 30.0
+Flow[(23)(23/21)] = 10.0
+Flow[(24)(24/15)] = 5.0
+Flow[(24)(24/16)] = 25.0
+Flow[(24/15)(15)] = 5.0
+Flow[(24/16)(16)] = 25.0
+Flow[(18/17)(17)] = 10.0
+Flow[(23/21)(21)] = 10.0
+
+\end{alltt}
+\end{multicols}
+
+\subsection*{Lowest leasing price}
+\begin{multicols}{2}
+\begin{alltt}
+Minimum Cost: 60.0
+Flow[([S])(0[s])] = 30.0
+Flow[([S])(1[s])] = 10.0
+Flow[([S])(2[s])] = 25.0
+Flow[([S])(3[s])] = 5.0
+Flow[([S])(4[s])] = 15.0
+Flow[([S])(5[s])] = 10.0
+Flow[(0[s])(6)] = 20.0
+Flow[(0[s])(7)] = 10.0
+Flow[(1[s])(8)] = 10.0
+Flow[(2[s])(9)] = 25.0
+Flow[(3[s])(9)] = 5.0
+Flow[(4[s])(9)] = 5.0
+Flow[(4[s])(10)] = 10.0
+Flow[(5[s])(10)] = 10.0
+Flow[(6)(18)] = 20.0
+Flow[(7)(18)] = 10.0
+Flow[(8)(12)] = 10.0
+Flow[(9)(11)] = 15.0
+Flow[(9)(12)] = 20.0
+Flow[(10)(11)] = 20.0
+Flow[(11)(13)] = 15.0
+Flow[(11)(14)] = 20.0
+Flow[(12)(15)] = 30.0
+Flow[(13)(14)] = 5.0
+Flow[(13)(15)] = 10.0
+Flow[(14)(19[t])] = 25.0
+Flow[(15)(16)] = 10.0
+Flow[(15)(19[t])] = 30.0
+Flow[(16)(19[t])] = 40.0
+Flow[(17)(23)] = 10.0
+Flow[(18)(20)] = 10.0
+Flow[(18)(21)] = 10.0
+Flow[(18)(18/17)] = 10.0
+Flow[(20)(22)] = 10.0
+Flow[(21)(22)] = 10.0
+Flow[(22)(24)] = 20.0
+Flow[(23)(24)] = 10.0
+Flow[(24)(24/16)] = 30.0
+Flow[(24/16)(16)] = 30.0
+Flow[(18/17)(17)] = 10.0
+
+\end{alltt}
+\end{multicols}
+
 \end{document}
