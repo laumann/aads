@@ -13,17 +13,37 @@ class SmallNet extends MF {
 	print(cs);
 	int[] sources = new int[1];
 	sources[0] = 3;
-	cs = conv2MaxFlow(cs);	
-	
-	print(cs);
 
+	int s = 0;
+	int t = 4;
+	
+	int[][] cost = new int[5][5];
+	connect(2, 3, 1, cost);
+	cost = mkCost(cost, cs);
+
+	cs = conv2MaxFlow(cs);
+	print(cs);
+	print(cost);
+	int [][] map = createmap(cs);
 	try {
-	    LpSolve solver = MF.conv2LP(cs, 0, 4);
+	    LpSolve solver = MF.conv2LP(cs, 0, 4, map);
+	    solver.solve();
+	    double objective = solver.getObjective();
 	    System.out.println("Value of objective function: " + solver.getObjective());
 	    double[] var = solver.getPtrVariables();
 	    for (int i = 0; i < var.length; i++) {
 		System.out.println("Value of var[" + i + "] = " + var[i]);
 	    }
+
+	    System.out.println("min cost:");	    
+	    LpSolve mincost = conv2MinCostLP(cs, cost, map, s, t, objective);
+	    mincost.solve();
+	    System.out.println("Value of objective function: " + solver.getObjective());
+	    var = solver.getPtrVariables();
+	    for (int i = 0; i < var.length; i++) {
+		System.out.println("Value of var[" + i + "] = " + var[i]);
+	    }
+
 
 	} catch (Exception e) {
 	    e.printStackTrace();
