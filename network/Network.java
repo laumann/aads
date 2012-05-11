@@ -93,7 +93,7 @@ public class Network extends MF {
 	    solver.solve();
 	    double objective = solver.getObjective();
 
-	    System.out.println("Value of objective function: " + solver.getObjective());
+	    System.out.println("Max Flow: " + solver.getObjective());
 	    double[] var = solver.getPtrVariables();
 	    for (int i = 0; i < var.length; i++) {
 		System.out.println("Flow[" + imap[i] + "] = " + var[i]);
@@ -103,7 +103,7 @@ public class Network extends MF {
 	    System.out.println("min cost:");	    
 	    LpSolve mincost = conv2MinCostLP(cs, cost, map, s, t, objective);
 	    mincost.solve();
-	    System.out.println("Value of objective function: " + mincost.getObjective());
+	    System.out.println("Minimum Cost: " + mincost.getObjective());
 	    var = mincost.getPtrVariables();
 	    for (int i = 0; i < var.length; i++) {
 		System.out.println("Flow[" + imap[i] + "] = " + var[i]);
