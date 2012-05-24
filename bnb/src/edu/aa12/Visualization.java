@@ -33,19 +33,19 @@ public class Visualization {
 	public static void visualizeSolution(Graph g, BnBNode n){
 		J2DScene scene = J2DScene.createJ2DSceneInFrame();
 		for(Edge e: g.edges){
-			scene.addShape(new LineSegment(new Point(g.vertexCoords[e.u]), new Point(g.vertexCoords[e.v])), new Color(180,180,180));
+			scene.addShape(new LineSegment(new NPoint(g.vertexCoords[e.u]), new NPoint(g.vertexCoords[e.v])), new Color(180,180,180));
 			
 		}
 		while(n.parent!=null) {
 			if(n.edgeIncluded){
-				scene.addShape(new LineSegment(new Point(g.vertexCoords[n.edge.u]), new Point(g.vertexCoords[n.edge.v])), Color.BLACK, 0.03);
+				scene.addShape(new LineSegment(new NPoint(g.vertexCoords[n.edge.u]), new NPoint(g.vertexCoords[n.edge.v])), Color.BLACK, 0.03);
 			}
 			n=n.parent;
 		}
 		int i=0;
 		for(double[] coords: g.vertexCoords){
-			scene.addShape(new Circle(new Point(coords), 0.1));
-			scene.addShape(new TextShape(""+(i++), new Point(coords), 0.1), Color.BLACK);
+			scene.addShape(new Circle(new NPoint(coords), 0.1));
+			scene.addShape(new TextShape(""+(i++), new NPoint(coords), 0.1), Color.BLACK);
 		}
 	}
 	
@@ -58,18 +58,18 @@ public class Visualization {
 		while(n.parent!=null){
 			Edge e = n.edge;
 			if(n.edgeIncluded){
-				scene.addShape(new LineSegment(new Point(g.vertexCoords[e.u]), new Point(g.vertexCoords[e.v])),java.awt.Color.GREEN, 0.05);
+				scene.addShape(new LineSegment(new NPoint(g.vertexCoords[e.u]), new NPoint(g.vertexCoords[e.v])),java.awt.Color.GREEN, 0.05);
 			}else{
-				scene.addShape(new LineSegment(new Point(g.vertexCoords[e.u]), new Point(g.vertexCoords[e.v])),java.awt.Color.RED, 0.05);
+				scene.addShape(new LineSegment(new NPoint(g.vertexCoords[e.u]), new NPoint(g.vertexCoords[e.v])),java.awt.Color.RED, 0.05);
 			}
 			n=n.parent;
 		}
 		for(Edge e: edges){
-			scene.addShape(new LineSegment(new Point(g.vertexCoords[e.u]), new Point(g.vertexCoords[e.v])));
+			scene.addShape(new LineSegment(new NPoint(g.vertexCoords[e.u]), new NPoint(g.vertexCoords[e.v])));
 		}
 		for(double[] coords: g.vertexCoords){
-			scene.addShape(new Circle(new Point(coords), 0.1));
-			scene.addShape(new TextShape(""+(i++), new Point(coords), 0.1));
+			scene.addShape(new Circle(new NPoint(coords), 0.1));
+			scene.addShape(new TextShape(""+(i++), new NPoint(coords), 0.1));
 		}
 	}
 }
