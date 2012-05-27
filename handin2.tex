@@ -77,17 +77,35 @@ Let $r_1^*,\dots,r_2^*$ be the optimal radii found by solving the
 liner program presented in the previous section. Then a lower bound on
 the optimal TSP solution is given by:
 \[
-2\sum_{i=0}^{|V|}r_i^*,
+2\sum_{i=0}^{|V|}r_i^*.
 \]
-because the circles are non-overlapping the optimal solution $C^*$ may
+
+Because the circles are non-overlapping, the optimal solution $C^*$ may
 have to travel outside the circles, this is indeed a lower bound.
+
+\subsubsection*{ILP formulation of TSP}
+
+To formulate TSP as an \emph{integer linear program} (ILP), we
+introduce decision variables for each edge $x_{ij}$, where $i$, $j \in
+\{1,\dots,|V|\}$, and demand that $x_{ij}\in\{0,1\}$, indicating by
+zero that the edge is not included in a tour, and one if it is.
+
+\begin{align*}
+  \text{min.:} \sum_{i=1}^{n-1}\sum_{j=i+1}^{n} d_{ij}x_{ij}
+\end{align*}
+\begin{align*}
+  \begin{array}{lrcll}
+    \text{s.t.:} & \displaystyle\sum_{k=1}^{i-1}x_{ki} + \displaystyle\sum_{k=i+1}^{n} x_{ik} &= &2, & i\in \{1,\dots,n\}\\
+                 & \displaystyle\sum_{i,j\in\mathbb{Z}}
+  \end{array}
+\end{align*}
 
 \newpage
 \begin{enumerate}
   \item Prove that the 1-tree is a lower bound. $\checkmark$
   \item Formulate a linear program that maximizes the radii of such
     non-overlapping circles. $\checkmark$
-  \item Describe how a lower bound can be computed from these circles.
+  \item Describe how a lower bound can be computed from these circles. $\checkmark$
   \item Write an integer linear program for TSP.
   \item Describe how you would relax the integer linear program of TSP to get a lower bound.
   \item Implement each of the three lower bounds described above (1-tree, zones and relaxation) and use them on each of the three problems. For each problem, report the shortest tour and number of nodes visited for each lower bound method. If the program does not terminate within 10 minutes its fine to just write ‘inf’. (There will be a prize for the group that solves the largest problem with the fewest number of nodes evaluated).
