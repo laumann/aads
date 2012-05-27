@@ -61,11 +61,26 @@ maximize the radii of non-overlapping circles drawn around each vertex
 \[
 \begin{array}{lrcll}
 \textrm{max.:} & \displaystyle\sum_{i=1}^{|V|} r_i  & & & \\
-\textrm{s.t.:} &  r_i+r_j                &\leq & c(v_i,v_j), & \forall i,j\in \{1,\dots,|V|\}, i \not = j \\
-& & & & v_i,v_j\in V\\
-& r_i &\geq & 0 & \forall i
+\textrm{s.t.:} &  r_i+r_j                &\leq & c(v_i,v_j), & \forall i,j\in \{1,\dots,|V|\}, v_i, v_j\in V, i \not = j \\
+%%& & & & v_i,v_j\in V\\
+& r_i &\geq & 0, & \forall i \in \{1,\dots,|V|\}
 \end{array}
 \]
+
+\subsubsection*{Zone lower bound}
+
+As is described in the exercise a tour visiting each city has to
+travel from somewhere on the circumference of each circle, to its
+center and back.
+
+Let $r_1^*,\dots,r_2^*$ be the optimal radii found by solving the
+liner program presented in the previous section. Then a lower bound on
+the optimal TSP solution is given by:
+\[
+2\sum_{i=0}^{|V|}r_i^*,
+\]
+because the circles are non-overlapping the optimal solution $C^*$ may
+have to travel outside the circles, this is indeed a lower bound.
 
 \newpage
 \begin{enumerate}
