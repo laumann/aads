@@ -1,0 +1,19 @@
+<project name="AADS" basedir=".">
+	<description>
+		Build file for AADS Java code for assignment 2.
+	</description>
+
+	<property name="src" location="src"/>
+	<property name="bin" location="bin"/>
+
+	<target name="init">
+		<tstamp />
+		<mkdir dir="${bin}" />
+	</target>
+
+	<target name="help" depends="init">
+		<echo>
+This is the build file for assignment 2 in AADS.
+		</echo>
+	</target>
+</project>
