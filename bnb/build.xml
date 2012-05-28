@@ -6,14 +6,41 @@
 	<property name="src" location="src"/>
 	<property name="bin" location="bin"/>
 
+	<path id="cpath">
+		<pathelement path="${classpath}" />
+		<pathelement location="ProGAL.jar" />
+	</path>
+
 	<target name="init">
 		<tstamp />
 		<mkdir dir="${bin}" />
 	</target>
 
+	<target name="run" depends="compile">
+		<java fork="true" dir="${bin}" classname="edu.aa12.MainMethods">
+			<classpath>
+				<pathelement path="${classpath}" />
+				<pathelement location="ProGAL.jar" />
+				<pathelement location="${bin}" />
+			</classpath>
+		</java>
+	</target>
+
+	<target name="compile" depends="init">
+		<javac srcdir="${src}" destdir="${bin}">
+			<classpath refid="cpath" />
+		</javac>
+	</target>
+
+	<target name="recompile" depends="clean">
+		<antcall target="compile" />
+	</target>
+
 	<target name="help" depends="init">
-		<echo>
-This is the build file for assignment 2 in AADS.
-		</echo>
+		<echo>This is the build file for assignment 2 in AADS.</echo>
+	</target>
+
+	<target name="clean" description="Clean up.">
+		<delete dir="${bin}" />
 	</target>
 </project>
