@@ -114,12 +114,43 @@ disallowed by this constraint.
 The third constraint is our \emph{integrality constraint}, demanding
 that we either include an edge completely or not at all.
 
-Removing both integrality constraint and subtour constraint. => assignment problem...
+In order to relax these constraints, we could start by removing the
+integrality constraint on $x_{ij}$, and let $0 \leq x_{ij} \leq
+1$. The we definitely have a linear program, which could be solved
+much more efficiently. The optimal solution to this relaxed form offers
+a lower bound on the optimal value.
+
+But could we do better? We have an number of constraints to rule out
+subtours exponential in the size of $|V|$. If we remove these our
+problem becomes a lot easier to solve by a linear program --- we only
+have $|V|$ constraints.
+
+By removing the integrality constraint and the subtour constraint, we
+have reduced our problem to a form of the assignment problem, which is
+promised to have an integral solution, because the constraint matrix
+is totally unimodular.
+
+
+
+%% could remove the integrality
+%% constraint along with the subtour constraint and we'd end up with a
+%% simple assignment problem.
+
+%% Removing both integrality constraint and subtour constraint. => assignment problem...
 
 \begin{description}
 \item[1-tree] After implementing the main idea of 1-tree by modifying the graph using additional BnBnodes, the challenge was to choose a node at each iteration, which could lead to a good bounding result. As can be seen in the different versions, various possibilities have been tested. The version used in the end sorted the vertices once by their two least costing edges and chose accordingly.
-\item[Zones]
-\item[ILP Relaxation]
+\item[Zones] We implemented the zone lower bound as described above
+  wih one small difference: First we formulate a linear program to
+  compute the maximal radii of the zones. Then, for a given
+  branch-and-bound node, we collect all the edges that \emph{must} be
+  included in the tour (by this node), and attempt to add a little
+  more to our lower bound.
+
+  Consider an included edge $(i,j)$: we can add $k = c(i,j) - r_i^* -
+  r_j^*$ to our lower bound. Because the circles are non-overlapping,
+  $k \geq 0$, so we can only improve our lower bound.
+\item[ILP Relaxation] 
 \end{description}
 
 %% \begin{table}[h!]
@@ -131,12 +162,11 @@ Removing both integrality constraint and subtour constraint. => assignment probl
 \begin{table}[h!]
   \centering
   \begin{tabular}{l|c|c|c|c|c|c}
-    & \multicolumn{2}{c|}{Instance 1} & \multicolumn{2}{|c|}{Instance 2} & \multicolumn{2}{|c}{Instance 3} \\
-    & Solution & Nodes &  Solution & Nodes & Solution & Nodes \\
-    \hline
-    none & 8.649 & 233902 &  19.030 & 1659236  & 26.753 & INF \\ 
+    & \multicolumn{2}{c|}{Instance 1} & \multicolumn{2}{|c|}{Instance 2} & \multicolumn{2}{|c}{Instance 3} \\\hline
+    none & 8.649 & 233902 &  19.030 & 1659236 & `inf' & `inf' \\ 
     1-tree (V6) & 8.649 & 12919 &  19.030 & 137 & 26.753 & 1250972 \\ 
-    Zones & -0.242763 & -0.142026 & -1.629922 & -2.061411 & -0.002435 & -0.001425 \\
+    Zones & 8.649 & 23740 & 19.030 & 86364 & - & - \\
+    ILP Relaxation & 8.649 & 3770 & 19.030 & 744 & - & - \\
   \end{tabular}
   \caption{Results for the various algorithms}
   \label{tab:results}
@@ -144,7 +174,24 @@ Removing both integrality constraint and subtour constraint. => assignment probl
 
 \begin{description}
 \item[1-tree] The version used in the end - V6 - performed very good compared to the former versions, a lot of possible improvements have already been implemented. Choosing the vertex for one-tree was one of the main leverages for improvement, as described above. Instance 1 and 2 show the different results depending on the graph density, a sparse graph needs a lot less generated nodes. Even instance 3 could be solved in reasonable time compared to the brute force approach. A not implemented, but possibly interesting improvement would be to sort the vertices for chosing the one-tree-vertex dynamically, depending on the possible minimum cost edges.
-\item[Zones]
+\item[Zones] Of the three lower bound methods, the zones seems to fare
+  the worst, but we didn't perform all the optimizations possible
+  either. We didn't consider \emph{excluded} edges when improving our
+  lower bound, which is a little more involved.
+
+  Say the edge $(i,j)$ for a certain branch-and-bound node is excluded
+  we can inspect $c(i,j)$ and the radii $r_i^*$ and $r_j^*$. If $r_i^*
+  + r_j^* = c(i,j)$, then the edge $(i,j)$ is constraining our
+  radii. But since we cannot include it in the tour (for this step in
+  the branch-and-bound algorithm), we could have ignored it (or
+  pretended that $c(i,j) = \infty$).
+
+  That means another edge would have constrained the radii $r_i^*$
+  and $r_j^*$. If we for node $i$ step through its incident edges, we
+  select, among the edges available to us (disregarding $(i,j)$ and
+  other excluded edges), the edge that constrains us the most, say
+  $(i,j')$, and we can add $k = c(i,j) - r_i^* - r_{j'}^*$ to our
+  lower bound. The symmetrical argument holds for $j$.
 \item[ILP Relaxation]
 \end{description}
 

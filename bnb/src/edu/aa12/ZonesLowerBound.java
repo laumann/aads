@@ -1,9 +1,6 @@
 package edu.aa12;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import lpsolve.LpSolve;
 import lpsolve.LpSolveException;
@@ -91,16 +88,6 @@ public class ZonesLowerBound implements ILowerBound {
 
 			solver.strSetObjFn(obj.toString().trim());
 			solver.setAddRowmode(true);
-			
-//			for (int i = 0; i < g.getVertices(); i++) {
-//				List<Edge> incident = g.incidentEdges[i];
-//				
-//				System.out.println("Incident to vertex " + i);
-//				for (Edge e : incident) {
-//					System.out.print(" " + e);
-//				}
-//				System.out.println("");
-//			}
 			
 			for (int i = 0; i < g.getVertices() - 1; i++) {
 				for (int j = i + 1; j < g.getVertices(); j++) {
