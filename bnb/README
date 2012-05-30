@@ -21,4 +21,34 @@ for the right architecture. Replacing the .jar in the lib folder with a version
 compiled for the architecture on which it's supposed to run on, should fix the
 problem.
 
+Usage
+-----
+To try out the different lower bound calculation methods, edit the MainMethods
+class to indicate which method to use.
 
+We extracted the 'lowerBound' method into an interface (think of it as a
+strategy), and provide the following classes that implement a lower bound
+calculation:
+
+ - SimpleStrategy
+ - OneTreeStrategy
+ - OneTreeStrategyVx, where x is a number in the range: { 2, 3, 4, 5, 6, 7 }
+ - ZonesLowerBound
+ - RelaxILPLowerBound
+
+To facilitate this, we added a second argument to BranchAndBound_TSP's
+constructor.
+
+Simply substitute the second argument of BranchAndBound_TSP's constructor with
+the desired strategy implementation. Example:
+
+	... = new BranchAndBound_TSP(g, new RelaxILPLowerBound());
+
+NOTE All versions of OneTreeStrategy take the graph g as argument. Example:
+
+	... = new BranchAndBound_TSP(g, new OneTreeStrategyV6(g));
+
+Fix
+---
+We added a 'fix' to get the visualization working and a small class called
+NPoint. 

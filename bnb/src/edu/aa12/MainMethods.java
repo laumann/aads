@@ -27,7 +27,9 @@ public class MainMethods {
 		 *  - OneTreeStrategy
 		 *  - OneTreeStrategyVx, where x is a number in the range: { 2, 3, 4, 5, 6, 7 }
 		 *  - ZonesLowerBound
-		 *  - RelaxILPLowerBound  
+		 *  - RelaxILPLowerBound
+		 *  
+		 * NOTE All versions of OneTreeStrategy take the graph as an argument!!
 		 */
 		BranchAndBound_TSP zonesSolver = new BranchAndBound_TSP(g, new RelaxILPLowerBound());
 		long zstart = System.nanoTime();
