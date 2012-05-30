@@ -129,9 +129,7 @@ public class BranchAndBound_TSP {
 		if (node.edgesDefined == graph.getVertices()) {
 			return objectiveValue(node);
 		}
-
 		return strategy.lowerBound(graph, node);
-
 	}
 
 	/** Assuming that n represents a valid hamiltonian tour return the length of the tour */
