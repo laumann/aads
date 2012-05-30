@@ -7,6 +7,12 @@ import java.util.List;
  * Author: Philip Pickering <pgpick@gmx.at>
  * Date: 5/30/12
  * Time: 4:06 PM
+ *
+ * strategy: OTS with lowerBound() = kruskal.mst + decisions + one-tree-vertex-edges
+ *
+ * use all prev decisions for mst
+ * choose ot-vertex, s.t. it's not in previous decisions if possible
+ *
  */
 public class OneTreeStrategyV3 extends OneTreeStrategy {
     @Override

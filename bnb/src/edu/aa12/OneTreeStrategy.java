@@ -7,6 +7,13 @@ import java.util.List;
  * Author: Philip Pickering <pgpick@gmx.at>
  * Date: 5/30/12
  * Time: 3:11 PM
+ *
+ * strategy: one tree
+ *
+ * lower-bound = kruskal.mst + one-tree-vertex-edges
+ *
+ * only using last decision,
+ * chose s.t. ot-vertex not in last decision
  */
 public class OneTreeStrategy implements ILowerBound {
 
