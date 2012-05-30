@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class OneTreeStrategy implements ILowerBound {
 
-    private Kruskal kruskal;
+    public Kruskal kruskal;
     Graph graph;
     OneTreeStrategy(Graph g) {
         kruskal = new Kruskal();
@@ -19,32 +19,7 @@ public class OneTreeStrategy implements ILowerBound {
 
     @Override
     public double lowerBound(Graph graph, BnBNode node) {
-        /*
-        while (n.parent != null) {
-            if (n.edge.u != one && n.edge.v != one) {
-                news = new BnBNode(news, n.edge, n.edgeIncluded);
-            }
-            else {
-                news = new BnBNode(news, n.edge, false);
-            }
-            n = n.parent;
-        }*/
-/*
 
-        for (Edge e : edges) {
-            news = new BnBNode(news, e, false);
-        }
-
-
-        List<Edge> mst = kruskal.minimumSpanningTree(graph, news);
-
-        for (int i = 0; i < 2; i++) {
-            Edge e = popMin(edges);
-            if (e.equals(node.edge)) e = popMin(edges);
-
-            mst.add(e);
-        }
-*/
         int one = 0;
         while (node.edge.u == one || node.edge.v == one) {
             one++;
