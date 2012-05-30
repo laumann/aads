@@ -135,30 +135,6 @@ public class BranchAndBound_TSP {
 
 	}
 
-
-    public double cost(List<Edge> edges) {
-        double sum = 0;
-        for (Edge e: edges) {
-            sum += graph.getDistance(e.u, e.v);
-        }
-        //System.out.println(sum);
-        return sum;
-    }
-
-    public Edge popMin(List<Edge> edges) {
-        Edge min = edges.get(0);
-        double minDist = graph.getDistance(min.u, min.v);
-        for (Edge e: edges) {
-            double dist = graph.getDistance(e.u, e.v);
-            if (dist < minDist) {
-                min = e;
-                minDist = dist;
-            }
-        }
-        edges.remove(min);
-        return min;
-    }
-
 	
 	/** Assuming that n represents a valid hamiltonian tour return the length of the tour */
 	public double objectiveValue(BnBNode n){
