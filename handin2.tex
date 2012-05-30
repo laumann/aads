@@ -117,7 +117,7 @@ that we either include an edge completely or not at all.
 Removing both integrality constraint and subtour constraint. => assignment problem...
 
 \begin{description}
-\item[1-tree] description of algorithm
+\item[1-tree] After implementing the main idea of 1-tree, the main challenge was to choose a node at each iteration, which could lead to a good bounding result. As can be seen in the different versions, different possibilities have been tested. The version used in the end sorted the vertices once by their two least costing edges and chose the least
 \item[Zones]
 \item[ILP Relaxation]
 \end{description}
@@ -131,18 +131,18 @@ Removing both integrality constraint and subtour constraint. => assignment probl
 \begin{table}[h!]
   \centering
   \begin{tabular}{l|c|c|c|c|c|c}
-    & \multicolumn{2}{c|}{knollA} & \multicolumn{2}{|c|}{knollB} & \multicolumn{2}{|c}{knollC} \\
-    & Training & Test & Training & Test & Training & Test \\
+    & \multicolumn{2}{c|}{Instance 1} & \multicolumn{2}{|c|}{Instance 2} & \multicolumn{2}{|c}{Instance 3} \\
+    & Solution & Nodes &  Solution & Nodes & Solution & Nodes \\
     \hline
-    1-tree & 0.01 & 0.03 & 0.40 & 0.49 & 0.01 & 0.03 \\ 
+    1-tree & 8.649 & 12919 &  19.030 & 137 & 26.753 & 1250972 \\ 
     Zones & -0.242763 & -0.142026 & -1.629922 & -2.061411 & -0.002435 & -0.001425 \\
   \end{tabular}
-  \caption{Error percentages and margins for each of the \textsc{knoll} problems}
-  \label{tab:ldaknollerror}
+  \caption{Results for the various algorithms}
+  \label{tab:results}
 \end{table}
 
 \begin{description}
-\item[1-tree] How it performed and reasoning
+\item[1-tree] The version used in the end (V6) performed very good compared to the former versions, a lot of possible improvements have already been implemented.
 \item[Zones]
 \item[ILP Relaxation]
 \end{description}
