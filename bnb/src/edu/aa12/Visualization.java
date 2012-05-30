@@ -18,7 +18,7 @@ public class Visualization {
 	public static void main(String[] args){
 		Graph g = new Instance2();
 		
-		visualizeSolution(g, new BranchAndBound_TSP(g).solve());
+		visualizeSolution(g, new BranchAndBound_TSP(g, new SimpleStrategy()).solve());
 		
 //		BnBNode n = new BnBNode(null,null,false);
 //		n = new BnBNode(n,new Edge(7,10), false);

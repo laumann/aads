@@ -1,9 +1,6 @@
 package edu.aa12;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 import edu.aa12.DisjointSet.DSNode;
 
@@ -16,10 +13,13 @@ public class BranchAndBound_TSP {
 	private final Graph graph;
 	/** The number of BnBNodes generated */
 	private long nodesGenerated = 0;
-	
+	private ILowerBound strategy;
+
+
 	/** Construct a problem instance */
-	public BranchAndBound_TSP(Graph g){
+	public BranchAndBound_TSP(Graph g, ILowerBound s){
 		graph = g;
+        strategy = s;
 	}
 	
 	/** Find the shortest tour visiting all nodes exactly once and return the result as a BnBNode. */
@@ -126,32 +126,15 @@ public class BranchAndBound_TSP {
 			return objectiveValue(node);
 		}
 
-        int one = 0;
-
-		//TODO: See assignment text
-        BnBNode n = node;
-        List<Edge> edges = new ArrayList<Edge>(graph.incidentEdges[one]);
-
-        BnBNode news = new BnBNode(null, null, false);
-
-        while (n.parent != null) {
-            if (n.edge.u != one && n.edge.v != one) {
-                news = new BnBNode(news, n.edge, n.edgeIncluded);
-            }
-            else {
-                news = new BnBNode(news, n.edge, false);
-            }
-            n = n.parent;
-        }
 
 
-        List<Edge> mst = kruskal.minimumSpanningTree(graph, news);
 
-        mst.add(popMin(edges));
-        mst.add(popMin(edges));
 
-		return cost(mst);
+        return strategy.lowerBound(graph, node);
+
+
 	}
+
 
     public double cost(List<Edge> edges) {
         double sum = 0;
