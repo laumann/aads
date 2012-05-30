@@ -1,0 +1,105 @@
+without any lower:
+
+Finished branch-and-bound. Path-length: 8.649, 233902 nodes generated
+Took 419.61ms
+Finished branch-and-bound. Path-length: 19.030, 1659236 nodes generated
+Took 3877.83ms
+
+
+lower = one-tree
+
+Finished branch-and-bound. Path-length: 8.649, 233902 nodes generated
+Took 2041.49ms
+Finished branch-and-bound. Path-length: 19.088, 829621 nodes generated
+Took 10545.79ms
+
+
+
+OTSA
+
+Finished branch-and-bound. Path-length: 8.649, 233902 nodes generated
+Took 2482.51ms
+Finished branch-and-bound. Path-length: 19.104, 56337 nodes generated
+Took 1165.80ms
+
+OTSv3
+		Finished branch-and-bound. Path-length: 5.414, 8 nodes generated
+        Took 14.78ms
+
+        Finished branch-and-bound. Path-length: 8.649, 12919 nodes generated
+        Took 585.76ms
+
+        Finished branch-and-bound. Path-length: 19.030, 289 nodes generated
+        Took 24.75ms
+
+        Finished branch-and-bound. Path-length: 26.753, 3035144 nodes generated
+        Took 246988.33ms
+
+
+OTSv4
+        Finished branch-and-bound. Path-length: 5.414, 9 nodes generated
+        Took 16.01ms
+        Finished branch-and-bound. Path-length: 8.649, 11382 nodes generated
+        Took 724.55ms
+        Finished branch-and-bound. Path-length: 19.030, 7086 nodes generated
+        Took 395.18ms
+
+
+OTSv5      (randomness)
+    r1
+        Finished branch-and-bound. Path-length: 8.649, 13978 nodes generated
+        Took 399.28ms
+        Finished branch-and-bound. Path-length: 19.030, 270 nodes generated
+        Took 19.59ms
+        Finished branch-and-bound. Path-length: 26.753, 2362708 nodes generated
+        Took 275861.07ms
+
+    r2
+        Finished branch-and-bound. Path-length: 8.649, 13720 nodes generated
+        Took 844.96ms
+        Finished branch-and-bound. Path-length: 19.030, 142 nodes generated
+        Took 47.03ms
+        Finished branch-and-bound. Path-length: 26.753, 2368738 nodes generated
+        Took 274999.01ms
+
+    r3
+        Finished branch-and-bound. Path-length: 8.649, 13496 nodes generated
+        Took 828.48ms
+        Finished branch-and-bound. Path-length: 19.030, 162 nodes generated
+        Took 38.54ms
+        Finished branch-and-bound. Path-length: 26.753, 2367072 nodes generated
+        Took 272488.00ms
+    r4
+        Finished branch-and-bound. Path-length: 8.649, 13890 nodes generated
+        Took 876.79ms
+        Finished branch-and-bound. Path-length: 19.030, 196 nodes generated
+        Took 41.80ms
+        Finished branch-and-bound. Path-length: 26.753, 2363224 nodes generated
+        Took 273464.99ms
+
+OTSv6
+        Finished branch-and-bound. Path-length: 8.649, 12919 nodes generated
+        Took 429.44ms
+        Finished branch-and-bound. Path-length: 19.030, 137 nodes generated
+        Took 12.75ms
+        Finished branch-and-bound. Path-length: 26.753, 1250972 nodes generated
+        Took 98956.77ms
+
+OTSv7
+        Finished branch-and-bound. Path-length: 8.649, 12919 nodes generated
+        Took 447.75ms
+        Finished branch-and-bound. Path-length: 19.030, 267 nodes generated
+        Took 25.17ms
+        Finished branch-and-bound. Path-length: 26.753, 1250972 nodes generated
+        Took 98837.38ms
+
+
+OTSv8
+        Finished branch-and-bound. Path-length: 5.414, 8 nodes generated
+        Took 13.70ms
+        Finished branch-and-bound. Path-length: 8.649, 12919 nodes generated
+        Took 576.44ms
+        Finished branch-and-bound. Path-length: 19.030, 137 nodes generated
+        Took 12.10ms
+        Finished branch-and-bound. Path-length: 26.753, 1250972 nodes generated
+        Took 100397.74ms
