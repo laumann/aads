@@ -1,0 +1,24 @@
+README
+======
+
+Quick README for the second AADS hand-in assignment.
+
+Layout of source code
+---------------------
+
+bnb/
+ |- lib (Contains ProGAL.jar and lpsolve55.jar)
+ |- src (contains all the source code
+ |- bin (will be created by ant compile target)
+ |- build.xml 
+
+Everything should be able to be invoking the ant target
+
+	ant run
+
+An obvious potential compilation problems, is that lpsolve55.jar is not compiled
+for the right architecture. Replacing the .jar in the lib folder with a version
+compiled for the architecture on which it's supposed to run on, should fix the
+problem.
+
+
