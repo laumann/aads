@@ -21,7 +21,7 @@ public abstract class Graph {
 		this.incidentEdges = new List[n];
 		for(int i=0;i<n;i++) incidentEdges[i]=new LinkedList<Edge>();
 		this.distances = new double[n][n];
-		for(int i=0;i<n;i++) for(int j=0;j<n;j++) distances[i][j] = Double.POSITIVE_INFINITY;
+		for(int i=0;i<n;i++) for(int j=0;j<n;j++) distances[i][j] = 1000; // Double.POSITIVE_INFINITY;
 
 	}
 	
@@ -34,7 +34,7 @@ public abstract class Graph {
 	}
 	
 	protected void createEdge(int i, int j){
-		if(distances[i][j]<Double.POSITIVE_INFINITY) return;
+		if(distances[i][j]< 1000) return; //Double.POSITIVE_INFINITY) return;
 		double dx = vertexCoords[i][0]-vertexCoords[j][0];
 		double dy = vertexCoords[i][1]-vertexCoords[j][1];
 		distances[i][j] = distances[j][i] = Math.sqrt( dx*dx+dy*dy );
