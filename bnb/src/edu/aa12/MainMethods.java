@@ -1,5 +1,10 @@
 package edu.aa12;
 
+/**
+ * Here's a wicked-ass comment (or wicked ass-comment)
+ * @author Thomas Jespersen <tj@asseco.dk>
+ *
+ */
 public class MainMethods {
 
 	public static void main(String[] args){
