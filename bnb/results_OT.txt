@@ -95,11 +95,9 @@ OTSv7
 
 
 OTSv8
-        Finished branch-and-bound. Path-length: 5.414, 8 nodes generated
-        Took 13.70ms
-        Finished branch-and-bound. Path-length: 8.649, 12919 nodes generated
-        Took 576.44ms
-        Finished branch-and-bound. Path-length: 19.030, 137 nodes generated
-        Took 12.10ms
-        Finished branch-and-bound. Path-length: 26.753, 1250972 nodes generated
-        Took 100397.74ms
+        Finished branch-and-bound. Path-length: 8.649, 12913 nodes generated
+        Took 474.10ms
+        Finished branch-and-bound. Path-length: 19.030, 273 nodes generated
+        Took 26.79ms
+        Finished branch-and-bound. Path-length: 26.753, 4447496 nodes generated
+        Took 306203.40ms
