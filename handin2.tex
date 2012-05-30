@@ -150,14 +150,15 @@ is totally unimodular.
   Consider an included edge $(i,j)$: we can add $k = c(i,j) - r_i^* -
   r_j^*$ to our lower bound. Because the circles are non-overlapping,
   $k \geq 0$, so we can only improve our lower bound.
-\item[ILP Relaxation] 
-\end{description}
+\item[ILP Relaxation] The implementation of ILP is rather
+  straight-forward and generates at every branch-and-bound node a new
+  linear program and computes a lower bound as described above.
 
-%% \begin{table}[h!]
-%%   \begin{tabular}
-    
-%%   \end{tabular}
-%% \end{table}
+  For a given branch-and-bound node, a few more constraints are added
+  to the linear program generated: Say a given edge $(i,j)$ must be
+  \emph{included}, we simply add the constraint ``$x_{ij} = 1$'' and if
+  the edge must be \emph{excluded} we demand ``$x_{ij} = 0$.''
+\end{description}
 
 \begin{table}[h!]
   \centering
@@ -193,28 +194,40 @@ is totally unimodular.
   $(i,j')$, and we can add $k = c(i,j) - r_i^* - r_{j'}^*$ to our
   lower bound. The symmetrical argument holds for $j$.
 \item[ILP Relaxation]
+  The interesting observation about the LP relaxation of TSP is that
+  the lower bound is much stronger than any of the other two
+  bounds. But this advantage is more or less lost on computation time,
+  because we haven't been smart about the treatment of linear
+  programs. We simply generate a new linear program per
+  branch-and-bound node, which is a waste.
+
+  Ideally, we should construct an initial LP and add and remove
+  constraints to it and ``re-solve'' it. This would save both time and
+  space, as adding just a single constraint and searching for the
+  solution from a near-optimal point is bound to be more efficient
+  than reconstructing the entire linear program plus the extra constraint.
 \end{description}
 
-\begin{itemize}
-\item table of results 'inf' when no results
-\item relaxation of ILP (Thomas)
-\item Description of implementation
-\item 
-\end{itemize}
+%% \begin{itemize}
+%% \item table of results 'inf' when no results
+%% \item relaxation of ILP (Thomas)
+%% \item Description of implementation
+%% \item 
+%% \end{itemize}
 
 
 
-\newpage
-\begin{enumerate}
-  \item Prove that the 1-tree is a lower bound. $\checkmark$
-  \item Formulate a linear program that maximizes the radii of such
-    non-overlapping circles. $\checkmark$
-  \item Describe how a lower bound can be computed from these circles. $\checkmark$
-  \item Write an integer linear program for TSP. $\checkmark$
-  \item Describe how you would relax the integer linear program of TSP to get a lower bound.
-  \item Implement each of the three lower bounds described above (1-tree, zones and relaxation) and use them on each of the three problems. For each problem, report the shortest tour and number of nodes visited for each lower bound method. If the program does not terminate within 10 minutes its fine to just write ‘inf’. (There will be a prize for the group that solves the largest problem with the fewest number of nodes evaluated).
-  \item For each of the three lower bound methods, give a brief description why you believe it performed the way it did and how it could be improved. 
-\end{enumerate}
+%% \newpage
+%% \begin{enumerate}
+%%   \item Prove that the 1-tree is a lower bound. $\checkmark$
+%%   \item Formulate a linear program that maximizes the radii of such
+%%     non-overlapping circles. $\checkmark$
+%%   \item Describe how a lower bound can be computed from these circles. $\checkmark$
+%%   \item Write an integer linear program for TSP. $\checkmark$
+%%   \item Describe how you would relax the integer linear program of TSP to get a lower bound.
+%%   \item Implement each of the three lower bounds described above (1-tree, zones and relaxation) and use them on each of the three problems. For each problem, report the shortest tour and number of nodes visited for each lower bound method. If the program does not terminate within 10 minutes its fine to just write ‘inf’. (There will be a prize for the group that solves the largest problem with the fewest number of nodes evaluated).
+%%   \item For each of the three lower bound methods, give a brief description why you believe it performed the way it did and how it could be improved. 
+%% \end{enumerate}
 
 %% As small example graph can be found in fig.\ref{fig:exg}.
 
