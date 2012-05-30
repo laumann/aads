@@ -1,14 +1,16 @@
+<!-- TODO: make nicer classpath (right now it's a lot of copy-pasting... -->
 <project name="AADS" basedir=".">
 	<description>
 		Build file for AADS Java code for assignment 2.
 	</description>
 
-	<property name="src" location="src"/>
-	<property name="bin" location="bin"/>
+	<property name="src" location="src" />
+	<property name="bin" location="bin" />
+	<property name="lib" location="lib" />
 
 	<path id="cpath">
 		<pathelement path="${classpath}" />
-		<pathelement location="ProGAL.jar" />
+		<pathelement path="${lib}" />
 	</path>
 
 	<target name="init">
@@ -18,17 +20,36 @@
 
 	<target name="run" depends="compile">
 		<java fork="true" dir="${bin}" classname="edu.aa12.MainMethods">
+		  <jvmarg value="-Djava.library.path=/usr/lib/lp_solve" />
 			<classpath>
 				<pathelement path="${classpath}" />
-				<pathelement location="ProGAL.jar" />
+				<pathelement location="lib/ProGAL.jar" />
+				<pathelement location="lib/lpsolve55j.jar" />
 				<pathelement location="${bin}" />
 			</classpath>
 		</java>
 	</target>
 
+	<!-- test the lp_solve -->
+	<target name="lpsolve_test" depends="compile">
+	  <java fork="true" dir="${bin}" classname="SmallNet">
+	    <jvmarg value="-Djava.library.path=/usr/lib/lp_solve" />
+	    <classpath>
+	      <pathelement path="${classpath}" />
+	      <pathelement location="lib/ProGAL.jar" />
+	      <pathelement location="lib/lpsolve55j.jar" />
+	      <pathelement location="${bin}" />
+	    </classpath>
+	  </java>
+	</target>
+
 	<target name="compile" depends="init">
 		<javac srcdir="${src}" destdir="${bin}">
-			<classpath refid="cpath" />
+			<classpath>
+			  <pathelement path="cpath" />
+			  <pathelement location="lib/ProGAL.jar" />
+			  <pathelement location="lib/lpsolve55j.jar" />
+			</classpath>
 		</javac>
 	</target>
 
@@ -39,6 +60,14 @@
 	<target name="help" depends="init">
 		<echo>This is the build file for assignment 2 in AADS.</echo>
 	</target>
+
+	<property name="java.library.path" value="test"/>
+	<property name="some.other.property" value="test1"/>
+	<target name="showprops">
+	  <echo>java.library.path=${java.library.path}</echo>
+	  <echo>some.other.property=${some.other.property}</echo>
+	</target>
+	
 
 	<target name="clean" description="Clean up.">
 		<delete dir="${bin}" />
