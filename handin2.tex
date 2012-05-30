@@ -51,9 +51,9 @@ which proves that the 1-tree is indeed a lower bound on the
 optimal tour.
 
 \subsubsection*{Zone LP}
-\begin{quotation}\itshape
-The tourists get a new idea for a lower bound that might improve the branch-and-bound algorithm. They observe that you can, for each monument, place a circle centered on the monument such that none of the circles overlap. A tour visiting each city has to travel from somewhere on the boundary of each circle, to the center and out to the boundary again.
-\end{quotation}
+%% \begin{quotation}\itshape
+%% The tourists get a new idea for a lower bound that might improve the branch-and-bound algorithm. They observe that you can, for each monument, place a circle centered on the monument such that none of the circles overlap. A tour visiting each city has to travel from somewhere on the boundary of each circle, to the center and out to the boundary again.
+%% \end{quotation}
 Given a graph $G = (V,E)$ with cost/distance function $c : V \times V
 \rightarrow \mathbb{R}$, we can write the following linear program to
 maximize the radii of non-overlapping circles drawn around each vertex
@@ -114,7 +114,47 @@ disallowed by this constraint.
 The third constraint is our \emph{integrality constraint}, demanding
 that we either include an edge completely or not at all.
 
-Removing both integrality constraint and subtour constraint.
+Removing both integrality constraint and subtour constraint. => assignment problem...
+
+\begin{description}
+\item[1-tree] description of algorithm
+\item[Zones]
+\item[ILP Relaxation]
+\end{description}
+
+%% \begin{table}[h!]
+%%   \begin{tabular}
+    
+%%   \end{tabular}
+%% \end{table}
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{l|c|c|c|c|c|c}
+    & \multicolumn{2}{c|}{knollA} & \multicolumn{2}{|c|}{knollB} & \multicolumn{2}{|c}{knollC} \\
+    & Training & Test & Training & Test & Training & Test \\
+    \hline
+    1-tree & 0.01 & 0.03 & 0.40 & 0.49 & 0.01 & 0.03 \\ 
+    Zones & -0.242763 & -0.142026 & -1.629922 & -2.061411 & -0.002435 & -0.001425 \\
+  \end{tabular}
+  \caption{Error percentages and margins for each of the \textsc{knoll} problems}
+  \label{tab:ldaknollerror}
+\end{table}
+
+\begin{description}
+\item[1-tree] How it performed and reasoning
+\item[Zones]
+\item[ILP Relaxation]
+\end{description}
+
+\begin{itemize}
+\item table of results 'inf' when no results
+\item relaxation of ILP (Thomas)
+\item Description of implementation
+\item 
+\end{itemize}
+
+
 
 \newpage
 \begin{enumerate}
