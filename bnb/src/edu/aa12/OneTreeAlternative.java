@@ -16,8 +16,8 @@ public class OneTreeAlternative extends OneTreeStrategy {
 
 
     public double lowerBound(Graph graph, BnBNode node) {
-        int one = 0;
-
+        int one = node.edge.u;
+        //int one = 0;
         BnBNode news = new BnBNode(null, null, false);
         List<Edge> edges = new LinkedList<Edge>(graph.incidentEdges[one]);
 
@@ -34,6 +34,6 @@ public class OneTreeAlternative extends OneTreeStrategy {
 
             mst.add(e);
         }
-        return 0;
+        return cost(mst);
     }
 }
