@@ -5,7 +5,6 @@ import java.util.List;
 
 import ProGAL.geom2d.Circle;
 import ProGAL.geom2d.LineSegment;
-import ProGAL.geom2d.Point;
 import ProGAL.geom2d.viewer.J2DScene;
 import ProGAL.geom2d.viewer.TextShape;
 

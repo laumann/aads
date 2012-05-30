@@ -9,6 +9,6 @@ public class SimpleStrategy implements ILowerBound {
 
     @Override
     public double lowerBound(Graph g, BnBNode node) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return 0; 
     }
 }
