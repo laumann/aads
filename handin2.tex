@@ -117,7 +117,7 @@ that we either include an edge completely or not at all.
 Removing both integrality constraint and subtour constraint. => assignment problem...
 
 \begin{description}
-\item[1-tree] After implementing the main idea of 1-tree, the challenge was to choose a node at each iteration, which could lead to a good bounding result. As can be seen in the different versions, various possibilities have been tested. The version used in the end sorted the vertices once by their two least costing edges and chose accordingly.
+\item[1-tree] After implementing the main idea of 1-tree by modifying the graph using additional BnBnodes, the challenge was to choose a node at each iteration, which could lead to a good bounding result. As can be seen in the different versions, various possibilities have been tested. The version used in the end sorted the vertices once by their two least costing edges and chose accordingly.
 \item[Zones]
 \item[ILP Relaxation]
 \end{description}
@@ -143,7 +143,7 @@ Removing both integrality constraint and subtour constraint. => assignment probl
 \end{table}
 
 \begin{description}
-\item[1-tree] The version used in the end - V6 - performed very good compared to the former versions, a lot of possible improvements have already been implemented. Choosing the vertex for one-tree was one of the main leverages for improvement. Instance 1 and 2 show the different results depending on the graph density, a sparse graph needs a lot less generated nodes.
+\item[1-tree] The version used in the end - V6 - performed very good compared to the former versions, a lot of possible improvements have already been implemented. Choosing the vertex for one-tree was one of the main leverages for improvement. Instance 1 and 2 show the different results depending on the graph density, a sparse graph needs a lot less generated nodes. Even instance 3 could be solved in reasonable time compared to the brute force approach.
 \item[Zones]
 \item[ILP Relaxation]
 \end{description}
