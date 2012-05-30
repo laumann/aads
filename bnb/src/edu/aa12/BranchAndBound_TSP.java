@@ -1,6 +1,8 @@
 package edu.aa12;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.PriorityQueue;
 
 import edu.aa12.DisjointSet.DSNode;
@@ -124,10 +126,56 @@ public class BranchAndBound_TSP {
 			return objectiveValue(node);
 		}
 
+        int one = 0;
+
 		//TODO: See assignment text
-		
-		return 0;
+        BnBNode n = node;
+        List<Edge> edges = new ArrayList<Edge>(graph.incidentEdges[one]);
+
+        BnBNode news = new BnBNode(null, null, false);
+
+        while (n.parent != null) {
+            if (n.edge.u != one && n.edge.v != one) {
+                news = new BnBNode(news, n.edge, n.edgeIncluded);
+            }
+            else {
+                news = new BnBNode(news, n.edge, false);
+            }
+            n = n.parent;
+        }
+
+
+        List<Edge> mst = kruskal.minimumSpanningTree(graph, news);
+
+        mst.add(popMin(edges));
+        mst.add(popMin(edges));
+
+		return cost(mst);
 	}
+
+    public double cost(List<Edge> edges) {
+        double sum = 0;
+        for (Edge e: edges) {
+            sum += graph.getDistance(e.u, e.v);
+        }
+        //System.out.println(sum);
+        return sum;
+    }
+
+    public Edge popMin(List<Edge> edges) {
+        Edge min = edges.get(0);
+        double minDist = graph.getDistance(min.u, min.v);
+        for (Edge e: edges) {
+            double dist = graph.getDistance(e.u, e.v);
+            if (dist < minDist) {
+                min = e;
+                minDist = dist;
+            }
+        }
+        edges.remove(min);
+        return min;
+    }
+
 	
 	/** Assuming that n represents a valid hamiltonian tour return the length of the tour */
 	public double objectiveValue(BnBNode n){
